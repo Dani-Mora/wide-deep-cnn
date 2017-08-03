@@ -39,3 +39,7 @@ Tensorflow is built-in with a very powerful visualization tool called Tensorboar
 Once Tensorboard has been launched, we can use the visualization environmnet by browsing:
 
 `http://localhost:6006`
+
+# Future work
+
+- Integration of random search for hyperparameter tuning.
