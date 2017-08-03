@@ -43,3 +43,5 @@ Once Tensorboard has been launched, we can use the visualization environmnet by 
 # Future work
 
 - Integration of random search for hyperparameter tuning.
+- Fix multiple identical lines in logs
+- Best model in validation has to be manually corrected in the 'checkpoint' in the logs. Correction must be done.
