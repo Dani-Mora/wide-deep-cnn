@@ -71,7 +71,7 @@ def _get_first_op_from_collection(collection_name):
 def get_saver(max_keep=4):
     """Lazy init and return saver. """
     saver = _get_first_op_from_collection(tf.GraphKeys.SAVERS)
-    if saver is None and tf.all_variables():
+    if saver is None and tf.global_variables_initializer():
         saver = tf.train.Saver(max_to_keep=max_keep,
                                var_list=savable_variables())
         tf.add_to_collection(tf.GraphKeys.SAVERS, saver)
@@ -98,7 +98,7 @@ def get_global_step(graph=None):
 
 def create_global_step():
     """ Creates a global step in the VARIABLEs and GLOBAL_STEP collections """
-    collections = [tf.GraphKeys.VARIABLES, tf.GraphKeys.GLOBAL_STEP]
+    collections = [tf.GraphKeys.GLOBAL_VARIABLES, tf.GraphKeys.GLOBAL_STEP]
     return tf.get_variable('global_step', shape=[],
                            dtype=tf.int32,
                            initializer=tf.constant_initializer(0),
