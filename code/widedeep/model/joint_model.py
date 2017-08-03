@@ -643,6 +643,7 @@ class JointModel(object):
         # Compute metric operations
         for m in metrics:
             predicted = self.predict(logits)
+            m.predicted = predicted
             m.compute_op(predicted, labels)
 
         # Track loss after regularization

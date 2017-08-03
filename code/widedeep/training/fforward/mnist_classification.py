@@ -3,7 +3,7 @@ from widedeep.model.model_base import CNNModel, LinearModel, MLP
 from widedeep.model.joint_model import JointClassifier
 from widedeep.ops.losses import Optimizers, CrossEntropy
 import widedeep.utils as ut
-from widedeep.ops.metrics import Accuracy
+from widedeep.ops.metrics import Accuracy, AccuracyRandom
 
 from protodata.image_ops import get_image_specs
 from protodata.data_ops import TrainMode, DataMode
@@ -238,6 +238,11 @@ if __name__ == '__main__':
                             outputs=dataset.get_num_classes(),
                             clip_gradient=FLAGS.gradient_clip)
 
+    model_metrics = [
+        Accuracy(),
+        AccuracyRandom(num_classes=dataset.get_num_classes())
+    ]
+
     if FLAGS.training:
         if FLAGS.validate:
             # Start training and validation
@@ -249,7 +254,7 @@ if __name__ == '__main__':
                                      steps=FLAGS.steps,
                                      patience=FLAGS.patience,
                                      gpu_frac=FLAGS.gpu_frac,
-                                     metrics=[Accuracy()])
+                                     metrics=model_metrics)
         else:
             # Start training
             joint.train(dataset=dataset,
@@ -258,7 +263,7 @@ if __name__ == '__main__':
                         track_summaries=FLAGS.summaries,
                         steps=FLAGS.steps,
                         gpu_frac=FLAGS.gpu_frac,
-                        metrics=[Accuracy()])
+                        metrics=model_metrics)
 
     else:
         # Evaluate on test
@@ -267,6 +272,6 @@ if __name__ == '__main__':
                                  batch_size=FLAGS.batch_size,
                                  track_summaries=FLAGS.summaries,
                                  gpu_frac=FLAGS.gpu_frac,
-                                 metrics=[Accuracy()])
+                                 metrics=model_metrics)
 
         logger.info(results)

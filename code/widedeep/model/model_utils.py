@@ -204,9 +204,6 @@ def clean_models(folder, steps_keep=None):
         else:
             if m_steps != steps_keep:
                 erase_model(folder, m_path)
-            else:
-                # TODO test functionality
-                tf.set_last_checkpoints_with_time([m_path, m_steps])
 
 
 def keep_tracked_models(folder, track):
@@ -253,13 +250,10 @@ class NetworkRun(object):
         # Gather metric operations
         metric_ops = [m.get_op() for m in self._metrics]
 
-        # DEBUG
-        predicted = self._metrics[0].predicted
-
         # Arguments set in certain position
         run_args = [train_ops, step_op, self._loss_op, self._logits_op,
                     self._data_ops, self._target_ops] + metric_ops + \
-                   [predicted] + [summary_ops]
+                   [summary_ops]
 
         # Run operations, measure time lapse and gather results
         start = time.time()
@@ -271,11 +265,8 @@ class NetworkRun(object):
         logits_value, data, labels, sum_and_metrics = rest[0], rest[1], \
             rest[2], rest[3:]
 
-        metric_values = sum_and_metrics[:-2]
-        pred, summary_str = sum_and_metrics[-2], sum_and_metrics[-1]  # noqa
-
-        logger.debug('Predicted: {}'.format(pred))
-        logger.debug('Labels: {}'.format(labels))
+        metric_values = sum_and_metrics[:-1]
+        summary_str = sum_and_metrics[-1]
 
         # Build metric dictionary
         metrics_out = {
