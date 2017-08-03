@@ -24,7 +24,6 @@ def variable(name,
         initializer: Initializer to compute.
         collections: Collections where variables should be added
         regularizer: Regularized function for the variable.
-            Not used for probabilistic variables # TODO check
         trainable: Whether the value of the variable should be
             subject to training
     Returns
