@@ -116,7 +116,7 @@ class DynamicMLPConfTestCase(NetworkConfTestCase):
 
         f4 = nc.FullyCLayer(name='fc4',
                             hidden=1,
-                            ctivation='tanh',
+                            activation='tanh',
                             dropout=0.0,
                             batch_norm=True)
 
